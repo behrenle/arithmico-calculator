@@ -1,7 +1,7 @@
 import createPlugin from '../../utils/plugin-builder';
 import lsolveFragment from './fragments/lsolve';
 import vectorFragment from './fragments/vector';
-import inverseMatrixFragment from './fragments/inverse-matrix';
+import matrixFragment from './fragments/matrix';
 import polynomialFragment from './fragments/polynomial';
 import tensorFragment from './fragments/tensor';
 
@@ -17,7 +17,7 @@ const algebraPlugin = createPlugin(
 )
     .addFragment(lsolveFragment)
     .addFragment(vectorFragment)
-    .addFragment(inverseMatrixFragment)
+    .addFragment(matrixFragment)
     .addFragment(polynomialFragment)
     .addFragment(tensorFragment)
     .build();

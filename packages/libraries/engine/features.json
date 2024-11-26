@@ -25,11 +25,12 @@
     ],
     "functions": [
         "matrixInverse",
-        "matrixId",
         "matrixAdj",
         "matrixCof",
         "matrixTranspose",
         "matrixDet",
+        "matrixId",
+        "matrixZero",
         "lsolve",
         "polynomialDeg",
         "polynomialAdd",

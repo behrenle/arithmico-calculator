@@ -1,4 +1,4 @@
-import { addColumn, det, getColumn, getSubMatrix } from './matrix-utils';
+import { addColumn, det, expandMatrix, getColumn, getSubMatrix, multiplyMatrixVector } from './matrix-utils';
 
 test('1x1 det', () => {
     expect(det([[7]])).toBe(7);
@@ -70,4 +70,36 @@ test('addColumn #1', () => {
 
 test('addColumn #2', () => {
     expect(addColumn([1, 2], [[], []])).toStrictEqual([[1], [2]]);
+});
+
+test('multiplyMatrixVector', () => {
+    expect(
+        multiplyMatrixVector(
+            [
+                [1, 2, 3],
+                [3, 4, 5],
+                [5, 6, 7],
+            ],
+            [2, 1, 1],
+        ),
+    ).toStrictEqual([7, 15, 23]);
+});
+
+test('expandMatrix', () => {
+    expect(
+        expandMatrix(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+            ],
+            5,
+        ),
+    ).toStrictEqual([
+        [1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 1, 2, 3],
+        [0, 0, 4, 5, 6],
+        [0, 0, 7, 8, 9],
+    ]);
 });

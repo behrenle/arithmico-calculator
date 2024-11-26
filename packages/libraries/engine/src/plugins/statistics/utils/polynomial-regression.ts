@@ -1,4 +1,5 @@
 import { cramerSolver, det } from '../../../utils/math-utils/matrix-utils';
+import {qrDecompositionSolver} from "../../../utils/math-utils/solve-linear-equation-utils";
 
 export function calculatePolynomialRegressionCoefficients(xs: number[], ys: number[], degree: number) {
     const arrayLength = degree + 1;

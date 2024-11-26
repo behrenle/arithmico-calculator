@@ -59,6 +59,17 @@ integrationTestThrow('matrix:id(3.5)');
 integrationTestThrow('matrix:id(-3)');
 integrationTestThrow('matrix:id(0)');
 
+// matrix:zero
+integrationTest('matrix:zero(1, 1)', '[[0]]');
+integrationTest('matrix:zero(3, 3)', '[[0, 0, 0], [0, 0, 0], [0, 0, 0]]');
+integrationTest('matrix:zero(2, 3)', '[[0, 0, 0], [0, 0, 0]]');
+integrationTestThrow('matrix:zero(3.5, 2)');
+integrationTestThrow('matrix:zero(-3, 2)');
+integrationTestThrow('matrix:id(0, 2)');
+integrationTestThrow('matrix:zero(2, 3.5)');
+integrationTestThrow('matrix:zero(2, -3)');
+integrationTestThrow('matrix:id(2, 0)');
+
 // polynomial:deg
 integrationTest('polynomial:deg(2*x^2 + x + 4)', '2');
 integrationTest('polynomial:deg(x)', '1');

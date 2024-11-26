@@ -90,3 +90,60 @@ export function calculateCofactorMatrix(matrix: number[][]): number[][] {
         row.map((column, j) => ((i + j) % 2 === 0 ? 1 : -1) * det(getSubMatrix(matrix, i, j))),
     );
 }
+
+export function createZeroMatrix(rows: number, columns: number): number[][] {
+    return new Array<number[]>(rows).fill(new Array(columns).fill(0));
+}
+
+export function scalarMultiplication(x: number[], y: number[]) {
+    return x.map((_, index) => x[index] * y[index]).reduce((a, b) => a + b);
+}
+
+export function dyadicMultiplication(x: number[], y: number[]) {
+    return new Array<number[]>(x.length)
+        .fill(new Array(y.length).fill(0))
+        .map((line, lineIndex) => line.map((value, columnIndex) => x[lineIndex] * y[columnIndex]));
+}
+
+// only matrix * vector
+export function multiplyMatrixVector(matrix: number[][], vector: number[]): number[] {
+    if (matrix[0].length !== vector.length) {
+        throw 'Runtime Error: the dimension of the matrix and the vector do not fit  ';
+    }
+
+    return vector.map((_, i) => scalarMultiplication(matrix[i], vector));
+}
+
+export function multiplyMatrixMatrix(matrixA: number[][], matrixB: number[][]) {
+    if (matrixA.length !== matrixB[0].length) {
+        throw 'Runtime Error: matrices do not have the correct dimension.';
+    }
+
+    return matrixA.map((rows, i) => rows.map((_, j) => scalarMultiplication(matrixA[i], getColumn(j, matrixB))));
+}
+
+/*
+expand a squared matrix A to the following type:
+    | id    0 |
+    | 0     A |
+ */
+export function expandMatrix(matrix: number[][], newSize: number): number[][] {
+    const oldSize = matrix.length;
+    const difference = newSize - oldSize;
+
+    if (difference === newSize) {
+        return matrix;
+    }
+
+    const upperHalf = createIdentityMatrix(difference);
+    const lowerHalf: number[][] = new Array(oldSize).fill([]);
+    for (let i = 0; i < difference; i++) {
+        upperHalf[i] = upperHalf[i].concat(new Array<number>(oldSize).fill(0));
+    }
+
+    for (let i = 0; i < oldSize; i++) {
+        lowerHalf[i] = new Array<number>(difference).fill(0).concat(matrix[i]);
+    }
+
+    return upperHalf.concat(lowerHalf);
+}

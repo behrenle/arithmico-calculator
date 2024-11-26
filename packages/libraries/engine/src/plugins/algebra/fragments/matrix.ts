@@ -5,6 +5,7 @@ import createVector from '../../../node-operations/create-node/create-vector';
 import {
     calculateCofactorMatrix,
     createIdentityMatrix,
+    createZeroMatrix,
     det,
     tensorToMatrix,
     transpose,
@@ -16,11 +17,15 @@ import { PluginFragment } from '../../../utils/plugin-builder';
 
 const singleVectorHeader: FunctionHeaderItem[] = [{ name: 'n', type: 'vector', evaluate: true }];
 const singleNumberHeader: FunctionHeaderItem[] = [{ name: 'n', type: 'number', evaluate: true }];
+const doubleNumberHeader: FunctionHeaderItem[] = [
+    { name: 'n', type: 'number', evaluate: true },
+    { name: 'm', type: 'number', evaluate: true },
+];
 
-const inverseMatrixFragment = new PluginFragment();
+const matrixFragment = new PluginFragment();
 
 __FUNCTIONS.matrixInverse &&
-    inverseMatrixFragment.addFunction(
+    matrixFragment.addFunction(
         'matrix:inverse',
         singleVectorHeader,
         'inverse a given square matrix if possible',
@@ -70,7 +75,7 @@ __FUNCTIONS.matrixInverse &&
     );
 
 __FUNCTIONS.matrixAdj &&
-    inverseMatrixFragment.addFunction(
+    matrixFragment.addFunction(
         'matrix:adj',
         singleVectorHeader,
         'calculates the adjugate matrix',
@@ -94,7 +99,7 @@ __FUNCTIONS.matrixAdj &&
     );
 
 __FUNCTIONS.matrixCof &&
-    inverseMatrixFragment.addFunction(
+    matrixFragment.addFunction(
         'matrix:cof',
         singleVectorHeader,
         'calculates the cofactor matrix',
@@ -118,7 +123,7 @@ __FUNCTIONS.matrixCof &&
     );
 
 __FUNCTIONS.matrixTranspose &&
-    inverseMatrixFragment.addFunction(
+    matrixFragment.addFunction(
         'matrix:transpose',
         singleVectorHeader,
         'transposes a matrix',
@@ -139,7 +144,7 @@ __FUNCTIONS.matrixTranspose &&
     );
 
 __FUNCTIONS.matrixDet &&
-    inverseMatrixFragment.addFunction(
+    matrixFragment.addFunction(
         'matrix:det',
         singleVectorHeader,
         'calculates the determinant of a matrix',
@@ -161,7 +166,7 @@ __FUNCTIONS.matrixDet &&
     );
 
 __FUNCTIONS.matrixId &&
-    inverseMatrixFragment.addFunction(
+    matrixFragment.addFunction(
         'matrix:id',
         singleNumberHeader,
         'creates an n x n identity matrix',
@@ -185,4 +190,41 @@ __FUNCTIONS.matrixId &&
         },
     );
 
-export default inverseMatrixFragment;
+__FUNCTIONS.matrixZero &&
+    matrixFragment.addFunction(
+        'matrix:zero',
+        doubleNumberHeader,
+        'creates an n x m matrix',
+        'Erzeugt eine n x m Matrix mit Nullen',
+        ({ getParameter, runtimeError }) => {
+            const n = (<NumberNode>getParameter('n')).value;
+            const m = (<NumberNode>getParameter('m')).value;
+
+            if (n % 1 !== 0) {
+                throw runtimeError('n has to be an integers.');
+            }
+            if (n < 0) {
+                throw runtimeError('n must not be negative.');
+            }
+            if (n === 0) {
+                throw runtimeError('n must not be zero.');
+            }
+            if (m % 1 !== 0) {
+                throw runtimeError('m has to be an integers.');
+            }
+            if (m < 0) {
+                throw runtimeError('m must not be negative.');
+            }
+            if (m === 0) {
+                throw runtimeError('m must not be zero.');
+            }
+
+            const zeroMatrix = createZeroMatrix(n, m);
+
+            return createVector(
+                zeroMatrix.map((value) => createVector(value.map((element) => createNumberNode(element)))),
+            );
+        },
+    );
+
+export default matrixFragment;
