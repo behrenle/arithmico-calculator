@@ -32,7 +32,9 @@ integrationTestThrow('binom(10, 1.87, 9)');
 integrationTestThrow('binom(10, -0.87, 9)');
 
 // cbinom
+integrationTest('cbinom(0, 0.7, 0)', '1');
 integrationTest('cbinom(10, 0.87, 9)', '0.751577');
+integrationTest('cbinom(5000, 0.2, 999)', '0.494358');
 integrationTestThrow('cbinom(-10, 0.87, 9)');
 integrationTestThrow('cbinom(10, 0.87, -9)');
 integrationTestThrow('cbinom(10.5, 0.87, 9)');
